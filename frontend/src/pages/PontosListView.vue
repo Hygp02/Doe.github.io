@@ -1,22 +1,44 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { listarAtivos } from '@/services/pontos.service'
+import { onMounted, ref, watch } from 'vue'
+import { buscar } from '@/services/pontos.service'
 import type { PontoColeta } from '@/types/ponto-coleta'
 import PontoCard from '@/components/PontoCard.vue'
+import PontoFilters from '@/components/PontoFilters.vue'
 
 const pontos = ref<PontoColeta[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
+const busca = ref('')
+const tipo = ref('')
 
-onMounted(async () => {
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
+
+async function carregarPontos() {
+  loading.value = true
+  error.value = null
   try {
-    pontos.value = await listarAtivos()
+    pontos.value = await buscar({ busca: busca.value || undefined, tipo: tipo.value || undefined })
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Erro ao carregar pontos de coleta.'
   } finally {
     loading.value = false
   }
+}
+
+onMounted(() => {
+  carregarPontos()
 })
+
+watch([busca, tipo], () => {
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    carregarPontos()
+  }, 300)
+})
+
+function handleLimpar() {
+  carregarPontos()
+}
 </script>
 
 <template>
@@ -28,6 +50,8 @@ onMounted(async () => {
       </p>
     </div>
 
+    <PontoFilters v-model:busca="busca" v-model:tipo="tipo" @limpar="handleLimpar" />
+
     <section v-if="loading" class="text-center py-8">
       <p class="text-muted-foreground">Carregando pontos de coleta...</p>
     </section>
@@ -37,7 +61,10 @@ onMounted(async () => {
     </section>
 
     <section v-else-if="pontos.length === 0" class="text-center py-12">
-      <p class="text-muted-foreground">Nenhum ponto de coleta encontrado.</p>
+      <p class="text-lg text-muted-foreground">Nenhum ponto de coleta encontrado.</p>
+      <p class="text-sm text-muted-foreground mt-1">
+        Tente ajustar os termos de busca ou limpar os filtros.
+      </p>
     </section>
 
     <section v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

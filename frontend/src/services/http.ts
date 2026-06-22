@@ -12,10 +12,19 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     return undefined as T
   }
 
-  const data = await response.json()
+  let data: Record<string, unknown>
+  try {
+    data = await response.json()
+  } catch {
+    throw new Error(
+      `Erro inesperado do servidor (status ${response.status}). Verifique se o backend esta rodando em http://localhost:3000.`,
+    )
+  }
 
   if (!response.ok) {
-    throw new Error(data.message ?? 'Erro ao realizar operacao.')
+    throw new Error(
+      (data.message as string) ?? `Erro ao realizar operacao (status ${response.status}).`,
+    )
   }
 
   return data as T

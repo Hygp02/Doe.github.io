@@ -37,10 +37,10 @@ export function listPontos(query: { busca?: string; tipo?: string; incluirInativ
   const tipo = query.tipo
 
   if (busca || tipo) {
-    return ok(service.repository.search(busca ?? '', tipo, includeInativos))
+    return ok(service.buscarPontos(busca ?? '', tipo, includeInativos))
   }
 
-  return ok(service.repository.findAll(includeInativos))
+  return ok(includeInativos ? service.repository.findAll(true) : service.listarAtivos())
 }
 
 export function getPontoById(id: string) {

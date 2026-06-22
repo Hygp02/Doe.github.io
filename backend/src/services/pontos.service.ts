@@ -1,8 +1,12 @@
 import * as repository from './pontos.repository.js'
-import type { PontoColeta, ResumoSistema } from '../types/ponto-coleta.js'
+import type { PontoColeta, ResumoSistema, TipoDoacao } from '../types/ponto-coleta.js'
 
 export function listarAtivos(): PontoColeta[] {
   return repository.findAll(false)
+}
+
+export function buscarPontos(query: string, tipo?: string, includeInativos = false): PontoColeta[] {
+  return repository.search(query, tipo, includeInativos)
 }
 
 export function getResumo(): ResumoSistema {
@@ -16,7 +20,7 @@ export function getResumo(): ResumoSistema {
   return {
     totalPontosAtivos: ativos.length,
     totalTiposDoacao: tiposSet.size,
-    tiposDisponiveis: [...tiposSet] as ResumoSistema['tiposDisponiveis'],
+    tiposDisponiveis: [...tiposSet] as TipoDoacao[],
   }
 }
 
