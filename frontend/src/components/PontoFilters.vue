@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { TipoDoacao } from '@/types/ponto-coleta'
 
 const TIPOS_DOACAO: { value: string; label: string }[] = [
@@ -23,10 +24,16 @@ function handleLimpar() {
   tipo.value = ''
   emit('limpar')
 }
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
+    handleLimpar()
+  }
+}
 </script>
 
 <template>
-  <div class="flex flex-col sm:flex-row gap-3">
+  <div class="flex flex-col sm:flex-row gap-3" role="search" aria-label="Filtros de busca">
     <div class="flex-1">
       <input
         v-model="busca"
@@ -34,6 +41,7 @@ function handleLimpar() {
         placeholder="Buscar por nome, bairro ou tipo de doação..."
         class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         aria-label="Buscar pontos de coleta"
+        @keydown.escape="handleKeydown"
       />
     </div>
     <div class="flex gap-2">
@@ -52,7 +60,7 @@ function handleLimpar() {
       </select>
       <button
         v-if="busca || tipo"
-        class="inline-flex items-center justify-center rounded-md border border-input bg-background h-10 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+        class="inline-flex items-center justify-center rounded-md border border-input bg-background h-10 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         aria-label="Limpar filtros"
         @click="handleLimpar"
       >

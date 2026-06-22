@@ -25,15 +25,15 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-10">
-    <section class="text-center space-y-4">
-      <h1 class="text-3xl font-bold tracking-tight text-primary">Mapa Solidário Maceió</h1>
-      <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+    <section class="text-center space-y-4 px-2">
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-primary">Mapa Solidário Maceió</h1>
+      <p class="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
         Encontre pontos de coleta de doações em Maceió. Descubra onde doar alimentos, roupas, itens
         de higiene, brinquedos, livros e móveis.
       </p>
       <RouterLink
         to="/pontos"
-        class="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground h-10 px-6 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
+        class="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground h-10 px-6 py-2 text-sm font-medium hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         Ver pontos de coleta
       </RouterLink>
@@ -48,7 +48,7 @@ onMounted(async () => {
     </section>
 
     <template v-else-if="resumo">
-      <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 text-center">
           <p class="text-3xl font-bold text-primary">{{ resumo.totalPontosAtivos }}</p>
           <p class="text-sm text-muted-foreground">Pontos de coleta ativos</p>

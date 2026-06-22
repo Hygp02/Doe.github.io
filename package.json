@@ -12,6 +12,7 @@
     "dev:frontend": "npm run dev --workspace @mapa-solidario/frontend",
     "build": "npm run build --workspace @mapa-solidario/backend && npm run build --workspace @mapa-solidario/frontend",
     "lint": "npm run lint --workspace @mapa-solidario/backend && npm run lint --workspace @mapa-solidario/frontend",
+    "test": "npm run test --workspace @mapa-solidario/backend && npm run test --workspace @mapa-solidario/frontend",
     "format": "prettier --write ."
   },
   "devDependencies": {

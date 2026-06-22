@@ -96,8 +96,10 @@ function handleSubmit() {
         :class="{ 'border-destructive': errors.nome }"
         aria-label="Nome do ponto de coleta"
         aria-required="true"
+        :aria-invalid="!!errors.nome"
+        :aria-describedby="errors.nome ? 'nome-error' : undefined"
       />
-      <p v-if="errors.nome" class="text-sm text-destructive">{{ errors.nome }}</p>
+      <p v-if="errors.nome" id="nome-error" role="alert" class="text-sm text-destructive">{{ errors.nome }}</p>
     </div>
 
     <div class="space-y-2">
@@ -120,8 +122,10 @@ function handleSubmit() {
         :class="{ 'border-destructive': errors.endereco }"
         aria-label="Endereco do ponto"
         aria-required="true"
+        :aria-invalid="!!errors.endereco"
+        :aria-describedby="errors.endereco ? 'endereco-error' : undefined"
       />
-      <p v-if="errors.endereco" class="text-sm text-destructive">{{ errors.endereco }}</p>
+      <p v-if="errors.endereco" id="endereco-error" role="alert" class="text-sm text-destructive">{{ errors.endereco }}</p>
     </div>
 
     <div class="space-y-2">
@@ -134,8 +138,10 @@ function handleSubmit() {
         :class="{ 'border-destructive': errors.bairro }"
         aria-label="Bairro do ponto"
         aria-required="true"
+        :aria-invalid="!!errors.bairro"
+        :aria-describedby="errors.bairro ? 'bairro-error' : undefined"
       />
-      <p v-if="errors.bairro" class="text-sm text-destructive">{{ errors.bairro }}</p>
+      <p v-if="errors.bairro" id="bairro-error" role="alert" class="text-sm text-destructive">{{ errors.bairro }}</p>
     </div>
 
     <div class="space-y-2">
@@ -157,7 +163,7 @@ function handleSubmit() {
           {{ tipo }}
         </button>
       </div>
-      <p v-if="errors.tiposDoacao" class="text-sm text-destructive">{{ errors.tiposDoacao }}</p>
+      <p v-if="errors.tiposDoacao" id="tiposDoacao-error" role="alert" class="text-sm text-destructive">{{ errors.tiposDoacao }}</p>
     </div>
 
     <div class="space-y-2">

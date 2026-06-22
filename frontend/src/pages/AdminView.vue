@@ -63,7 +63,8 @@ function navigateToEdit(id: string) {
         <p class="text-muted-foreground">Gerencie os pontos de coleta.</p>
       </div>
       <button
-        class="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground h-10 px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
+        class="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground h-10 px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label="Cadastrar novo ponto de coleta"
         @click="navigateToCreate"
       >
         Novo ponto
@@ -72,6 +73,7 @@ function navigateToEdit(id: string) {
 
     <div
       class="rounded-lg border bg-accent/50 p-4 text-sm text-muted-foreground"
+      role="status"
     >
       <strong>Atencao:</strong> Os dados sao mockados e alteracoes serao perdidas ao reiniciar o servidor.
     </div>
@@ -80,15 +82,16 @@ function navigateToEdit(id: string) {
       v-if="feedback"
       class="rounded-md p-3 text-sm"
       :class="feedback.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-destructive/10 text-destructive border border-destructive/20'"
+      role="alert"
     >
       {{ feedback.message }}
     </div>
 
-    <section v-if="loading" class="text-center py-8">
+    <section v-if="loading" class="text-center py-8" aria-busy="true">
       <p class="text-muted-foreground">Carregando...</p>
     </section>
 
-    <section v-else-if="error" class="text-center py-8">
+    <section v-else-if="error" class="text-center py-8" role="alert">
       <p class="text-destructive">{{ error }}</p>
     </section>
 
@@ -97,11 +100,11 @@ function navigateToEdit(id: string) {
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b bg-muted/50">
-              <th class="px-4 py-3 text-left font-medium">Nome</th>
-              <th class="px-4 py-3 text-left font-medium">Bairro</th>
-              <th class="px-4 py-3 text-left font-medium">Status</th>
-              <th class="px-4 py-3 text-left font-medium">Tipos</th>
-              <th class="px-4 py-3 text-right font-medium">Acoes</th>
+              <th scope="col" class="px-4 py-3 text-left font-medium">Nome</th>
+              <th scope="col" class="px-4 py-3 text-left font-medium">Bairro</th>
+              <th scope="col" class="px-4 py-3 text-left font-medium">Status</th>
+              <th scope="col" class="px-4 py-3 text-left font-medium">Tipos</th>
+              <th scope="col" class="px-4 py-3 text-right font-medium">Acoes</th>
             </tr>
           </thead>
           <tbody>
@@ -126,14 +129,16 @@ function navigateToEdit(id: string) {
               <td class="px-4 py-3 text-right">
                 <div class="flex justify-end gap-2">
                   <button
-                    class="inline-flex items-center justify-center rounded-md border border-input bg-background h-8 px-3 text-xs font-medium hover:bg-accent transition-colors"
+                    class="inline-flex items-center justify-center rounded-md border border-input bg-background h-8 px-3 text-xs font-medium hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    :aria-label="`Editar ${ponto.nome}`"
                     @click="navigateToEdit(ponto.id)"
                   >
                     Editar
                   </button>
                   <button
-                    class="inline-flex items-center justify-center rounded-md border border-destructive bg-background h-8 px-3 text-xs font-medium text-destructive hover:bg-destructive/10 transition-colors"
+                    class="inline-flex items-center justify-center rounded-md border border-destructive bg-background h-8 px-3 text-xs font-medium text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     :disabled="deleting === ponto.id"
+                    :aria-label="`Remover ${ponto.nome}`"
                     @click="handleDelete(ponto.id)"
                   >
                     {{ deleting === ponto.id ? '...' : 'Remover' }}
