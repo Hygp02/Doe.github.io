@@ -1,4 +1,4 @@
-import type { PontoColeta, PontoColetaInput, ErrorResponse } from '../types/ponto-coleta.js'
+import type { PontoColetaInput, ErrorResponse } from '../types/ponto-coleta.js'
 import * as service from '../services/pontos.service.js'
 
 export function ok<T>(data: T) {
@@ -23,14 +23,6 @@ export function notFound(message: string) {
   return { status: 404, body }
 }
 
-function validateInput(input: PontoColetaInput): string | null {
-  if (!input.nome || !input.nome.trim()) return 'Nome e obrigatorio.'
-  if (!input.endereco || !input.endereco.trim()) return 'Endereco e obrigatorio.'
-  if (!input.bairro || !input.bairro.trim()) return 'Bairro e obrigatorio.'
-  if (!input.tiposDoacao || input.tiposDoacao.length === 0) return 'Ao menos um tipo de doacao e obrigatorio.'
-  return null
-}
-
 export function listPontos(query: { busca?: string; tipo?: string; incluirInativos?: string }) {
   const includeInativos = query.incluirInativos === 'true'
   const busca = query.busca
@@ -40,34 +32,30 @@ export function listPontos(query: { busca?: string; tipo?: string; incluirInativ
     return ok(service.buscarPontos(busca ?? '', tipo, includeInativos))
   }
 
-  return ok(includeInativos ? service.repository.findAll(true) : service.listarAtivos())
+  return ok(includeInativos ? service.listarTodos() : service.listarAtivos())
 }
 
 export function getPontoById(id: string) {
-  const ponto = service.repository.findById(id)
+  const ponto = service.buscarPorId(id)
   if (!ponto) return notFound('Ponto de coleta nao encontrado.')
   return ok(ponto)
 }
 
 export function createPonto(input: PontoColetaInput) {
-  const error = validateInput(input)
-  if (error) return badRequest(error)
-
-  const ponto = service.repository.create(input)
-  return created(ponto)
+  const result = service.criarPonto(input)
+  if ('error' in result) return badRequest(result.error)
+  return created(result)
 }
 
 export function updatePonto(id: string, input: PontoColetaInput) {
-  const error = validateInput(input)
-  if (error) return badRequest(error)
-
-  const ponto = service.repository.update(id, input)
-  if (!ponto) return notFound('Ponto de coleta nao encontrado.')
-  return ok(ponto)
+  const result = service.atualizarPonto(id, input)
+  if (!result) return notFound('Ponto de coleta nao encontrado.')
+  if ('error' in result) return badRequest(result.error)
+  return ok(result)
 }
 
 export function deletePonto(id: string) {
-  const removed = service.repository.remove(id)
+  const removed = service.removerPonto(id)
   if (!removed) return notFound('Ponto de coleta nao encontrado.')
   return noContent()
 }
