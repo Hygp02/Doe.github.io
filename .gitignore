@@ -1,6 +1,8 @@
 node_modules/
 dist/
 coverage/
+backend/tests/**/*.js
+backend/*.js
 *.tsbuildinfo
 .env
 .env.*

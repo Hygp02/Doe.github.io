@@ -4,7 +4,7 @@ import { RouterLink, useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Search, Heart, ShieldAlert, PiggyBank } from 'lucide-vue-next'
+import { MapPin, Search, Heart, ShieldAlert, PiggyBank, Info } from 'lucide-vue-next'
 import { getResumo, listarAtivos } from '@/services/pontos.service'
 import type { PontoColeta, ResumoSistema } from '@/types/ponto-coleta'
 import PontoCard from '@/components/PontoCard.vue'
@@ -79,6 +79,33 @@ onMounted(() => {
               Ver pontos de coleta
             </RouterLink>
           </Button>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-xl border border-blue-200 bg-blue-50/70 p-4 sm:p-5 animate-fade-in-up">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div class="rounded-full bg-blue-100 p-2 text-blue-700 shrink-0">
+          <Info
+            class="h-5 w-5"
+            aria-hidden="true"
+          />
+        </div>
+        <div>
+          <p class="text-sm font-medium text-blue-900">
+            ONGs reais de Maceió
+          </p>
+          <p class="text-sm text-blue-800/80 leading-relaxed">
+            Os pontos de coleta exibidos são organizações sociais reais cadastradas em Maceió/AL.
+            Os dados foram obtidos a partir do site
+            <a
+              href="https://www.ongsbrasil.com.br/default.asp?Pag=1&Destino=Instituicoes&Estado=AL&Cidade=Maceio"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline hover:text-blue-900"
+            >ongsbrasil.com.br</a>.
+            Recomendamos confirmar diretamente com a ONG antes de realizar a doação.
+          </p>
         </div>
       </div>
     </section>

@@ -153,18 +153,25 @@ npm run test --workspace @mapa-solidario/frontend
 - Layout administrativo adaptado para mobile com cards e confirmação de remoção.
 - Componentes visuais padronizados com shadcn-vue.
 - Skip link e melhorias de acessibilidade.
-- Mapa simulado de Maceió com pins por bairro na home, listagem e detalhes.
+- Mapa real de Maceió com Leaflet e OpenStreetMap, mostrando a localização exata (geocodificada) das ONGs.
 - Animações contextuais de entrada e micro-interações nos cards e seções.
+- Pontos de coleta baseados em ONGs reais de Maceió/AL, com indicação da fonte pública.
+
+## Fonte dos Dados
+
+Os pontos de coleta exibidos no protótipo são organizações sociais reais cadastradas em Maceió, Alagoas. Os dados foram obtidos a partir do cadastro público do site [ongsbrasil.com.br](https://www.ongsbrasil.com.br/default.asp?Pag=1&Destino=Instituicoes&Estado=AL&Cidade=Maceio).
+
+As coordenadas geográficas (latitude e longitude) dos endereços foram obtidas via geocodificação pelo [Nominatim / OpenStreetMap](https://nominatim.openstreetmap.org/) e armazenadas junto aos dados de cada ONG.
+
+> ⚠️ Recomendamos confirmar diretamente com a ONG o endereço, telefone e necessidades de doação antes de realizar qualquer entrega.
 
 ## Limitações do Protótipo
 
-- **Dados mockados**: Os dados são carregados em memória ao iniciar o servidor backend. Alterações feitas via área administrativa são perdidas ao reiniciar o servidor.
+- **Dados em memória**: Os dados são carregados em memória ao iniciar o servidor backend. Alterações feitas via área administrativa são perdidas ao reiniciar o servidor.
 - **Sem autenticação**: A área administrativa é acessível sem login.
 - **Sem banco de dados**: Não há persistência em disco ou banco de dados.
-- **Mapa simulado**: O mapa exibido é uma ilustração SVG estilizada, sem geolocalização real ou integração com serviços de mapas.
 - **Sem integrações externas**: Não há envio de emails, notificações ou validação externa.
 - **Escopo Maceió**: A cidade padrão é fixa como "Maceio".
-- **Dados fictícios**: Os pontos de coleta são exemplos fictícios para demonstração.
 
 ## Validação Rápida
 

@@ -2,7 +2,7 @@
 import { watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
-import { SearchX } from 'lucide-vue-next'
+import { SearchX, Info } from 'lucide-vue-next'
 import { usePontos } from '@/composables/usePontos'
 import PontoCard from '@/components/PontoCard.vue'
 import PontoFilters from '@/components/PontoFilters.vue'
@@ -35,6 +35,28 @@ watch([busca, tipo], () => {
       title="Pontos de Coleta"
       description="Confira os locais disponíveis para realizar doações em Maceió."
     />
+
+    <section class="rounded-xl border border-blue-200 bg-blue-50/70 p-4 sm:p-5">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div class="rounded-full bg-blue-100 p-2 text-blue-700 shrink-0">
+          <Info
+            class="h-5 w-5"
+            aria-hidden="true"
+          />
+        </div>
+        <p class="text-sm text-blue-800/80 leading-relaxed">
+          <span class="font-medium text-blue-900">ONGs reais.</span>
+          Os dados das organizações abaixo foram obtidos no cadastro público
+          <a
+            href="https://www.ongsbrasil.com.br/default.asp?Pag=1&Destino=Instituicoes&Estado=AL&Cidade=Maceio"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline hover:text-blue-900"
+          >ongsbrasil.com.br</a>.
+          Confirme as necessidades de cada ONG antes de doar.
+        </p>
+      </div>
+    </section>
 
     <PontoFilters
       v-model:busca="busca"

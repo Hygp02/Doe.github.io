@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { ArrowLeft, MapPin, Clock, FileText, Package, AlertCircle } from 'lucide-vue-next'
+import { ArrowLeft, MapPin, Clock, FileText, Package, AlertCircle, Info } from 'lucide-vue-next'
 import { usePonto } from '@/composables/usePonto'
 import AppLoading from '@/components/AppLoading.vue'
 import AppError from '@/components/AppError.vue'
@@ -104,6 +104,28 @@ function voltar() {
           </p>
         </div>
       </div>
+
+      <section class="rounded-xl border border-blue-200 bg-blue-50/70 p-4 sm:p-5 animate-fade-in-up">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div class="rounded-full bg-blue-100 p-2 text-blue-700 shrink-0">
+            <Info
+              class="h-5 w-5"
+              aria-hidden="true"
+            />
+          </div>
+          <p class="text-sm text-blue-800/80 leading-relaxed">
+            <span class="font-medium text-blue-900">ONG real.</span>
+            Os dados desta organização foram obtidos no cadastro público
+            <a
+              href="https://www.ongsbrasil.com.br/default.asp?Pag=1&Destino=Instituicoes&Estado=AL&Cidade=Maceio"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline hover:text-blue-900"
+            >ongsbrasil.com.br</a>.
+            Confirme telefone e necessidades antes de doar.
+          </p>
+        </div>
+      </section>
 
       <ExternalActions :ponto="ponto" />
 
@@ -226,6 +248,7 @@ function voltar() {
             <CardContent class="p-0">
               <MapaMaceio
                 :pontos="[ponto]"
+                :highlight-id="ponto.id"
                 :interactive="false"
                 :height="220"
               />

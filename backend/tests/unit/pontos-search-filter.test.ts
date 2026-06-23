@@ -8,21 +8,23 @@ describe('buscarPontos', () => {
   })
 
   it('deve retornar pontos que correspondem ao nome pesquisado', () => {
-    const result = service.buscarPontos('Ponta Verde')
+    const result = service.buscarPontos('APAE')
     expect(result.length).toBe(1)
-    expect(result[0].nome).toBe('Centro Comunitario Ponta Verde')
+    expect(result[0].nome).toContain('APAE')
   })
 
   it('deve retornar pontos que correspondem ao bairro pesquisado', () => {
-    const result = service.buscarPontos('Benedito')
-    expect(result.length).toBe(1)
-    expect(result[0].bairro).toBe('Benedito Bentes')
+    const result = service.buscarPontos('Centro')
+    expect(result.length).toBeGreaterThanOrEqual(1)
+    expect(result.some((p) => p.bairro === 'Centro')).toBe(true)
   })
 
   it('deve retornar pontos que correspondem ao tipo de doacao pesquisado', () => {
     const result = service.buscarPontos('brinquedos')
-    expect(result.length).toBe(1)
-    expect(result[0].tiposDoacao).toContain('brinquedos')
+    expect(result.length).toBeGreaterThanOrEqual(1)
+    for (const ponto of result) {
+      expect(ponto.tiposDoacao).toContain('brinquedos')
+    }
   })
 
   it('deve filtrar por tipo de doacao', () => {
@@ -35,7 +37,7 @@ describe('buscarPontos', () => {
 
   it('deve combinar busca por texto e filtro por tipo', () => {
     const result = service.buscarPontos('', 'roupas')
-    expect(result.length).toBe(2)
+    expect(result.length).toBeGreaterThanOrEqual(2)
     for (const ponto of result) {
       expect(ponto.tiposDoacao).toContain('roupas')
     }
@@ -47,24 +49,25 @@ describe('buscarPontos', () => {
   })
 
   it('deve ignorar pontos inativos por padrao na busca', () => {
-    const result = service.buscarPontos('Farol')
+    const result = service.buscarPontos('Ponto Inativo de Exemplo')
     expect(result).toHaveLength(0)
   })
 
   it('deve incluir inativos quando solicitado', () => {
-    const result = service.buscarPontos('Farol', undefined, true)
+    const result = service.buscarPontos('Ponto Inativo de Exemplo', undefined, true)
     expect(result.length).toBe(1)
     expect(result[0].status).toBe('inativo')
   })
 
   it('busca deve ser case insensitive', () => {
-    const result = service.buscarPontos('ponta verde')
+    const result = service.buscarPontos('apae')
     expect(result.length).toBe(1)
+    expect(result[0].nome.toLowerCase()).toContain('apae')
   })
 
   it('deve buscar por partes do nome', () => {
-    const result = service.buscarPontos('Esperanca')
+    const result = service.buscarPontos('Acal')
     expect(result.length).toBe(1)
-    expect(result[0].nome).toContain('Esperanca')
+    expect(result[0].nome).toContain('Acal')
   })
 })

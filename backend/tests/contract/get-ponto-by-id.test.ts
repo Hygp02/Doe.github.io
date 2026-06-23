@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { listPontos, getPontoById } from '../../src/controllers/pontos.controller.js'
+import { getPontoById } from '../../src/controllers/pontos.controller.js'
 import { seed } from '../../src/services/pontos.repository.js'
 
 describe('GET /pontos/{id} (contrato)', () => {
@@ -16,9 +16,9 @@ describe('GET /pontos/{id} (contrato)', () => {
   it('deve retornar nome, endereco e bairro do ponto', () => {
     const result = getPontoById('pc-001')
     const ponto = result.body as Record<string, unknown>
-    expect(ponto.nome).toBe('Centro Comunitario Ponta Verde')
-    expect(ponto.endereco).toBe('Rua Jose Pontes de Magalhaes, 120')
-    expect(ponto.bairro).toBe('Ponta Verde')
+    expect(ponto.nome).toBe('ONG Abrigo Noturno Sao Vicente De Paulo')
+    expect(ponto.endereco).toBe('Rua General Hermes, 41')
+    expect(ponto.bairro).toBe('Cambona')
   })
 
   it('deve retornar status 404 para id inexistente', () => {
@@ -37,6 +37,8 @@ describe('GET /pontos/{id} (contrato)', () => {
     expect(ponto).toHaveProperty('endereco')
     expect(ponto).toHaveProperty('bairro')
     expect(ponto).toHaveProperty('cidade')
+    expect(ponto).toHaveProperty('latitude')
+    expect(ponto).toHaveProperty('longitude')
     expect(ponto).toHaveProperty('tiposDoacao')
     expect(ponto).toHaveProperty('horarioFuncionamento')
     expect(ponto).toHaveProperty('telefone')
@@ -44,8 +46,15 @@ describe('GET /pontos/{id} (contrato)', () => {
     expect(ponto).toHaveProperty('observacoes')
   })
 
+  it('deve retornar coordenadas geograficas para ONGs geocodificadas', () => {
+    const result = getPontoById('pc-001')
+    const ponto = result.body as { latitude: number; longitude: number }
+    expect(typeof ponto.latitude).toBe('number')
+    expect(typeof ponto.longitude).toBe('number')
+  })
+
   it('deve retornar ponto inativo quando acessado diretamente por id', () => {
-    const result = getPontoById('pc-004')
+    const result = getPontoById('pc-011')
     expect(result.status).toBe(200)
     const ponto = result.body as { status: string }
     expect(ponto.status).toBe('inativo')

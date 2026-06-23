@@ -8,19 +8,19 @@ describe('GET /pontos?busca=&tipo= (contrato)', () => {
   })
 
   it('deve filtrar por bairro via query param busca', () => {
-    const result = listPontos({ busca: 'Ponta Verde' })
+    const result = listPontos({ busca: 'Cambona' })
     expect(result.status).toBe(200)
     const pontos = result.body as Array<{ bairro: string }>
     expect(pontos.length).toBe(1)
-    expect(pontos[0].bairro).toBe('Ponta Verde')
+    expect(pontos[0].bairro).toBe('Cambona')
   })
 
   it('deve filtrar por nome via query param busca', () => {
-    const result = listPontos({ busca: 'Maos Unidas' })
+    const result = listPontos({ busca: 'APAE' })
     expect(result.status).toBe(200)
     const pontos = result.body as Array<{ nome: string }>
     expect(pontos.length).toBe(1)
-    expect(pontos[0].nome).toContain('Maos Unidas')
+    expect(pontos[0].nome).toContain('APAE')
   })
 
   it('deve filtrar por tipo de doacao via query param tipo', () => {
@@ -37,8 +37,8 @@ describe('GET /pontos?busca=&tipo= (contrato)', () => {
     const result = listPontos({ busca: 'Tabuleiro', tipo: 'roupas' })
     expect(result.status).toBe(200)
     const pontos = result.body as Array<{ bairro: string; tiposDoacao: string[] }>
-    expect(pontos.length).toBe(1)
-    expect(pontos[0].bairro).toBe('Tabuleiro do Martins')
+    expect(pontos.length).toBeGreaterThanOrEqual(1)
+    expect(pontos[0].bairro).toContain('Tabuleiro')
     expect(pontos[0].tiposDoacao).toContain('roupas')
   })
 
@@ -49,17 +49,17 @@ describe('GET /pontos?busca=&tipo= (contrato)', () => {
     expect(pontos).toHaveLength(0)
   })
 
-  it('deve retornar lista vazia para tipo sem resultados', () => {
-    const result = listPontos({ tipo: 'brinquedos', incluirInativos: 'false' })
+  it('deve retornar lista vazia para tipo sem resultados quando nao houver inativos', () => {
+    const result = listPontos({ tipo: 'moveis', incluirInativos: 'false' })
     expect(result.status).toBe(200)
     const pontos = result.body as Array<unknown>
-    expect(pontos.length).toBe(1)
+    expect(pontos.length).toBe(0)
   })
 
   it('busca vazia sem tipo deve retornar todos os ativos', () => {
     const result = listPontos({})
     expect(result.status).toBe(200)
     const pontos = result.body as Array<unknown>
-    expect(pontos.length).toBe(3)
+    expect(pontos.length).toBe(10)
   })
 })

@@ -19,14 +19,14 @@ describe('GET /pontos (contrato)', () => {
   it('deve retornar apenas pontos ativos por padrao', () => {
     const result = listPontos({})
     const pontos = result.body as Array<{ status: string }>
-    expect(pontos.length).toBe(3)
+    expect(pontos.length).toBe(10)
     expect(pontos.every((p) => p.status === 'ativo')).toBe(true)
   })
 
   it('deve retornar pontos inativos quando incluirInativos=true', () => {
     const result = listPontos({ incluirInativos: 'true' })
     const pontos = result.body as Array<{ status: string }>
-    expect(pontos.length).toBe(4)
+    expect(pontos.length).toBe(11)
     expect(pontos.some((p) => p.status === 'inativo')).toBe(true)
   })
 
@@ -48,6 +48,6 @@ describe('GET /pontos (contrato)', () => {
     expect(resumo).toHaveProperty('totalPontosAtivos')
     expect(resumo).toHaveProperty('totalTiposDoacao')
     expect(resumo).toHaveProperty('tiposDisponiveis')
-    expect(resumo.totalPontosAtivos).toBe(3)
+    expect(resumo.totalPontosAtivos).toBe(10)
   })
 })

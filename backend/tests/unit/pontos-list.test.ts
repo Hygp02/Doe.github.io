@@ -37,7 +37,7 @@ describe('getResumo', () => {
   it('deve retornar total de pontos ativos', () => {
     const resumo = service.getResumo()
     expect(resumo.totalPontosAtivos).toBeGreaterThan(0)
-    expect(resumo.totalPontosAtivos).toBe(3)
+    expect(resumo.totalPontosAtivos).toBe(10)
   })
 
   it('deve retornar tipos de doacao disponiveis', () => {
@@ -48,12 +48,11 @@ describe('getResumo', () => {
 
   it('deve incluir apenas tipos dos pontos ativos', () => {
     const resumo = service.getResumo()
-    expect(resumo.totalTiposDoacao).toBe(6)
+    expect(resumo.totalTiposDoacao).toBe(5)
     expect(resumo.tiposDisponiveis).toContain('alimentos')
     expect(resumo.tiposDisponiveis).toContain('roupas')
     expect(resumo.tiposDisponiveis).toContain('higiene')
     expect(resumo.tiposDisponiveis).toContain('brinquedos')
     expect(resumo.tiposDisponiveis).toContain('livros')
-    expect(resumo.tiposDisponiveis).toContain('moveis')
   })
 })

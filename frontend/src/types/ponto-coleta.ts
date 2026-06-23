@@ -15,6 +15,8 @@ export interface PontoColeta {
   endereco: string
   bairro: string
   cidade: 'Maceio'
+  latitude?: number
+  longitude?: number
   tiposDoacao: TipoDoacao[]
   horarioFuncionamento: string
   telefone: string
@@ -28,6 +30,8 @@ export interface PontoColetaInput {
   endereco: string
   bairro: string
   cidade: 'Maceio'
+  latitude?: number
+  longitude?: number
   tiposDoacao: TipoDoacao[]
   horarioFuncionamento?: string
   telefone?: string
