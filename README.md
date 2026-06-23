@@ -54,7 +54,7 @@ specs/002-melhorias-frontend/
 
 ## Pré-requisitos
 
-- Node.js >= 20.19.0
+- Node.js >= 24.0.0
 - npm (gerenciador de pacotes)
 
 ## Instalação
