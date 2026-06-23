@@ -186,6 +186,14 @@ O projeto usa um monorepo com o app web dentro de `frontend/`. O arquivo
 - **Output Directory**: `frontend/dist`
 - **SPA fallback**: todas as rotas retornam para `/index.html`
 
+Se o projeto da Vercel estiver configurado com **Root Directory** igual a
+`frontend`, use estes valores:
+
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+
+Nesse caso, a Vercel usa o `frontend/vercel.json`.
+
 ### Como funciona
 
 - O workflow instala as dependências com `npm ci`.
