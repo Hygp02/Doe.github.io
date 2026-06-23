@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm run build --workspace @mapa-solidario/frontend",
-  "outputDirectory": "/",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/(.*)",

@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build --workspace @mapa-solidario/frontend",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
