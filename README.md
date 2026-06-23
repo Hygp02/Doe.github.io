@@ -1,61 +1,73 @@
 # Mapa Solidário Maceió
 
-Protótipo web para visualização e gerenciamento simulado de pontos de coleta de doações em Maceió.
+Aplicação web para encontrar pontos de coleta de doações em Maceió. O projeto
+exibe ONGs e instituições sociais em um mapa, permite filtrar por tipo de
+doação e inclui uma área administrativa simulada para demonstrar cadastro,
+edição e remoção de pontos.
 
-## Escopo
+## Funcionalidades
 
-- Frontend em Vue.js 3 + TypeScript com Vite.
-- UI baseada em shadcn-vue + Tailwind CSS.
-- Backend em Node.js + TypeScript com Express.
-- Dados mockados em memória, sem banco de dados real.
-- Área administrativa simulada, sem autenticação real.
+- Listagem pública de pontos de coleta ativos.
+- Busca por nome, bairro ou tipo de doação.
+- Filtros por categoria: alimentos, roupas, higiene, brinquedos, livros e móveis.
+- Filtros sincronizados com a URL para permitir compartilhamento da busca.
+- Página de detalhes de cada ponto com endereço, telefone, horários e observações.
+- Ações rápidas para copiar endereço, ligar e abrir o endereço no mapa externo.
+- Mapa interativo de Maceió com Leaflet e OpenStreetMap.
+- Home com resumo dos pontos ativos e tipos de doação disponíveis.
+- Área administrativa simulada para listar, criar, editar e remover pontos.
+- Estados visuais de carregamento, erro, vazio e feedback de ações.
+- Layout responsivo para desktop e mobile.
+- Página 404 para rotas inexistentes.
+
+## Dados
+
+Os pontos exibidos são mockados no próprio frontend. As alterações feitas na
+área administrativa ficam apenas em memória e são perdidas ao recarregar a
+página.
+
+Os dados iniciais usam ONGs reais de Maceió/AL como referência, obtidas a
+partir do cadastro público do site
+[ongsbrasil.com.br](https://www.ongsbrasil.com.br/default.asp?Pag=1&Destino=Instituicoes&Estado=AL&Cidade=Maceio).
+As coordenadas foram associadas aos endereços para exibição no mapa.
+
+Recomenda-se confirmar diretamente com a instituição o endereço, telefone e as
+necessidades atuais antes de realizar qualquer doação.
+
+## Stack
+
+- Vue 3
+- TypeScript
+- Vite
+- Vue Router
+- Tailwind CSS
+- shadcn-vue
+- Leaflet
+- Vitest
 
 ## Estrutura
 
 ```text
-backend/
-├── src/
-│   ├── controllers/
-│   ├── mocks/
-│   ├── routes/
-│   ├── services/
-│   └── types/
-└── tests/
-    ├── contract/
-    └── unit/
-
 frontend/
 ├── src/
-│   ├── components/
-│   │   ├── ui/          (shadcn-vue)
-│   │   ├── AppLoading.vue
-│   │   ├── AppError.vue
-│   │   ├── AppEmpty.vue
-│   │   ├── AppFeedback.vue
-│   │   ├── ExternalActions.vue
-│   │   ├── PontoCard.vue
-│   │   ├── PontoFilters.vue
-│   │   └── PontoForm.vue
-│   ├── composables/     (lógica reutilizável de estado e filtros)
-│   ├── constants/       (constantes como tipos de doação)
-│   ├── lib/             (helpers utilitários)
-│   ├── mocks/
-│   ├── pages/
-│   ├── router/
-│   ├── services/
-│   └── types/
+│   ├── components/   # componentes de UI e componentes do domínio
+│   ├── composables/  # lógica reutilizável de estado e filtros
+│   ├── constants/    # tipos e constantes da aplicação
+│   ├── lib/          # helpers utilitários
+│   ├── mocks/        # dados mockados dos pontos de coleta
+│   ├── pages/        # telas da aplicação
+│   ├── router/       # rotas do Vue Router
+│   ├── services/     # operações em memória sobre os mocks
+│   └── types/        # tipos TypeScript
 └── tests/
     ├── component/
     └── unit/
-
-specs/001-mapa-solidario-maceio/
-specs/002-melhorias-frontend/
 ```
 
 ## Pré-requisitos
 
 - Node.js >= 24.0.0
-- npm (gerenciador de pacotes)
+- npm
 
 ## Instalação
 
@@ -63,139 +75,58 @@ specs/002-melhorias-frontend/
 npm install
 ```
 
-## Execução
-
-Iniciar backend e frontend em paralelo:
+## Execução local
 
 ```bash
-npm run dev
+npm run dev:frontend
 ```
 
-Ou separadamente:
+A aplicação fica disponível em:
 
-```bash
-npm run dev:backend   # API em http://localhost:3000
-npm run dev:frontend  # UI em http://localhost:5173
+```text
+http://localhost:5173
 ```
 
 ## Scripts
 
 | Comando | Descrição |
 |---------|-----------|
-| `npm run dev` | Inicia backend e frontend em paralelo |
-| `npm run dev:backend` | Inicia apenas o backend |
-| `npm run dev:frontend` | Inicia apenas o frontend |
-| `npm run build` | Compila backend e frontend |
-| `npm run lint` | Executa lint nos dois projetos |
-| `npm run format` | Formata com Prettier |
-| `npm run test` | Executa testes (raiz) |
+| `npm run dev:frontend` | Inicia o frontend em modo desenvolvimento |
+| `npm run build --workspace @mapa-solidario/frontend` | Gera o build de produção do frontend |
+| `npm run test --workspace @mapa-solidario/frontend` | Executa os testes do frontend |
+| `npm run lint --workspace @mapa-solidario/frontend` | Executa lint no frontend |
+| `npm run format` | Formata o projeto com Prettier |
 
-### Testes
-
-Backend (51 testes em 7 suites):
-
-```bash
-npm run test --workspace @mapa-solidario/backend
-```
-
-Frontend (25 testes em 5 suites):
-
-```bash
-npm run test --workspace @mapa-solidario/frontend
-```
-
-**Total: 76 testes, todos passando.**
-
-| Suite | Tipo | Testes |
-|-------|------|--------|
-| `pontos-list.test.ts` | Unitário backend | 6 |
-| `pontos-search-filter.test.ts` | Unitário backend | 10 |
-| `pontos-admin.test.ts` | Unitário backend | 10 |
-| `get-pontos.test.ts` | Contrato backend | 5 |
-| `get-pontos-query.test.ts` | Contrato backend | 7 |
-| `get-ponto-by-id.test.ts` | Contrato backend | 5 |
-| `pontos-admin.test.ts` | Contrato backend | 8 |
-| `PontoCard.test.ts` | Componente frontend | 5 |
-| `PontoFilters.test.ts` | Componente frontend | 7 |
-| `PontoDetailsView.test.ts` | Componente frontend | 2 |
-| `PontoForm.test.ts` | Componente frontend | 7 |
-| `useQueryFilters.test.ts` | Unitário frontend | 4 |
-
-## Endpoints da API
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/pontos` | Lista pontos ativos. `?incluirInativos=true` para admin. `?busca=` e `?tipo=` para filtro. |
-| `GET` | `/pontos/:id` | Detalhes de um ponto |
-| `POST` | `/pontos` | Cria ponto (body JSON conforme `PontoColetaInput`) |
-| `PUT` | `/pontos/:id` | Atualiza ponto |
-| `DELETE` | `/pontos/:id` | Remove ponto |
-| `GET` | `/resumo` | Resumo do sistema (total ativos, tipos) |
-| `GET` | `/health` | Status da API |
-
-## Rotas do Frontend
+## Rotas
 
 | Rota | Descrição |
 |------|-----------|
 | `/` | Home com resumo e destaques |
-| `/pontos` | Listagem pública com busca e filtros (filtros sincronizados com URL) |
-| `/pontos/:id` | Detalhes do ponto de coleta com ações práticas |
-| `/admin` | Administração (tabela/cards com CRUD) |
-| `/admin/novo` | Formulário de cadastro |
-| `/admin/editar/:id` | Formulário de edição |
+| `/pontos` | Listagem pública com busca e filtros |
+| `/pontos/:id` | Detalhes do ponto de coleta |
+| `/admin` | Administração simulada dos pontos |
+| `/admin/novo` | Cadastro simulado de ponto |
+| `/admin/editar/:id` | Edição simulada de ponto |
 | `/*` | Página 404 |
 
-## Melhorias do Frontend
+## Limitações
 
-- Estados de carregamento, erro e vazio padronizados em todas as telas.
-- Filtros de busca sincronizados com a URL, permitindo compartilhamento.
-- Ações práticas na tela de detalhes: copiar endereço, ligar e abrir no mapa externo.
-- Layout administrativo adaptado para mobile com cards e confirmação de remoção.
-- Componentes visuais padronizados com shadcn-vue.
-- Skip link e melhorias de acessibilidade.
-- Mapa real de Maceió com Leaflet e OpenStreetMap, mostrando a localização exata (geocodificada) das ONGs.
-- Animações contextuais de entrada e micro-interações nos cards e seções.
-- Pontos de coleta baseados em ONGs reais de Maceió/AL, com indicação da fonte pública.
-
-## Fonte dos Dados
-
-Os pontos de coleta exibidos no protótipo são organizações sociais reais cadastradas em Maceió, Alagoas. Os dados foram obtidos a partir do cadastro público do site [ongsbrasil.com.br](https://www.ongsbrasil.com.br/default.asp?Pag=1&Destino=Instituicoes&Estado=AL&Cidade=Maceio).
-
-As coordenadas geográficas (latitude e longitude) dos endereços foram obtidas via geocodificação pelo [Nominatim / OpenStreetMap](https://nominatim.openstreetmap.org/) e armazenadas junto aos dados de cada ONG.
-
-> ⚠️ Recomendamos confirmar diretamente com a ONG o endereço, telefone e necessidades de doação antes de realizar qualquer entrega.
-
-## Limitações do Protótipo
-
-- **Dados em memória**: Os dados são mockados no frontend. Alterações feitas via área administrativa são perdidas ao recarregar a página.
-- **Sem autenticação**: A área administrativa é acessível sem login.
-- **Sem banco de dados**: Não há persistência em disco ou banco de dados.
-- **Sem integrações externas**: Não há envio de emails, notificações ou validação externa.
-- **Escopo Maceió**: A cidade padrão é fixa como "Maceio".
+- Não há backend em produção.
+- Não há banco de dados.
+- Não há autenticação na área administrativa.
+- Cadastros, edições e remoções não persistem após recarregar a página.
+- Não há envio de emails, notificações ou integrações externas.
+- O escopo geográfico é fixo em Maceió.
 
 ## Deploy na Vercel
 
-O deploy da Vercel publica apenas o frontend estático. Os dados das ONGs são
-mockados no próprio frontend, então não é necessário rodar backend em produção.
+O deploy publica apenas o frontend estático. Configure o projeto na Vercel com:
 
-- **Root Directory**: `.`
-- **Build Command**: `npm run build --workspace @mapa-solidario/frontend`
-- **Output Directory**: `frontend/dist`
-- **SPA fallback**: todas as rotas retornam para `/index.html`
+```text
+Root Directory: .
+Build Command: npm run build --workspace @mapa-solidario/frontend
+Output Directory: frontend/dist
+```
 
-### Como funciona
-
-- A Vercel instala as dependencias do monorepo.
-- Executa `npm run build --workspace=@mapa-solidario/frontend`.
-- Publica o diretorio `frontend/dist`.
-
-O `index.html` dentro de `frontend/` é o arquivo de entrada do Vite. Em
-produção, a Vercel serve os arquivos gerados em `frontend/dist`, incluindo o
-`index.html` final e os assets em `/assets`.
-
-## Validação Rápida
-
-Consulte os guias de validação em:
-
-- `specs/001-mapa-solidario-maceio/quickstart.md`
-- `specs/002-melhorias-frontend/quickstart.md`
+O arquivo `frontend/index.html` é a entrada do Vite. Em produção, a Vercel
+serve o resultado gerado em `frontend/dist`.
