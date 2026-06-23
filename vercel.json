@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build --workspace @mapa-solidario/",
+  "buildCommand": "npm run build",
   "outputDirectory": "frontent/dist",
   "rewrites": [
     {
